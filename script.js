@@ -160,7 +160,7 @@ const memories = [
   {
     title: "La primera vez que nos reímos sin parar",
     text: "Fue ese día en la cafetería...",
-    img: "img/im1.JPEG",
+    img: "img/im1.png",
     tag: "Risa eterna"
   },
   {
