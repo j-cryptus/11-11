@@ -132,7 +132,7 @@ function playTasTax() {
 // 3. DATOS: RECUERDOS
 // ============================================================
 const memories = [
-  { title: "La primera vez que nos reímos sin parar", text: "Fue ese día en la cafetería...", img: "img/im1.png", tag: "Risa eterna" },
+  { title: "La primera vez que nos reímos sin parar", text: "Fue ese día en la cafetería...", img: "\jardin recuerdos\img\im2.png", tag: "Risa eterna" },
   { title: "Nuestro viaje improvisado", text: "Sin planear nada...", img: "img/recuerdo2.jpg", tag: "Aventura" },
   { title: "Cuando me escuchaste sin juzgar", text: "Ese día no necesitaba consejos...", img: "img/recuerdo3.jpg", tag: "Gracias" },
   { title: "Las 3 a.m. hablando de todo", text: "De la vida, del universo...", img: "img/recuerdo4.jpg", tag: "Madrugadas" },
@@ -281,23 +281,67 @@ window.addEventListener('orientationchange', onViewportChange);
 // ============================================================
 // Se detecta un "toque corto": poco movimiento y poco tiempo.
 // Así arrastrar para rotar el jardín no abre recuerdos por error.
+// ============================================================
+// 5. TOQUE EN LA FLOR (hit-test manual por profundidad)
+// ============================================================
+
+// Devuelve el tulipán con MAYOR Z (más cercano a la cámara) cuya
+// proyección 2D contiene el punto (x, y). Null si ninguno.
+function findTulipAt(x, y) {
+  const tulips = garden.querySelectorAll('.tulip');
+  let best = null;
+  let bestZ = -Infinity;
+
+  tulips.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    // Área efectiva del tulipán (incluye un poco de margen táctil)
+    const pad = isTouch ? 20 : 8;
+    const inside =
+      x >= rect.left - pad && x <= rect.right + pad &&
+      y >= rect.top  - pad && y <= rect.bottom + pad;
+
+    if (!inside) return;
+
+    // La Z que guardamos al construir el jardín
+    const z = parseFloat(el.style.getPropertyValue('--z')) || 0;
+
+    // Si hay empate en Z, gana el que esté más abajo (más cerca visual)
+    if (z > bestZ) {
+      bestZ = z;
+      best = el;
+    }
+  });
+
+  return best;
+}
+
 let tapStart = null;
 
 garden.addEventListener('pointerdown', (e) => {
-  const el = e.target.closest('.tulip');
-  tapStart = el ? { el, x: e.clientX, y: e.clientY, t: performance.now() } : null;
+  if (isCardOpen()) return;
+
+  const el = findTulipAt(e.clientX, e.clientY);
+  tapStart = el
+    ? { el, x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId }
+    : null;
 });
 
 garden.addEventListener('pointerup', (e) => {
   if (!tapStart) return;
+  if (e.pointerId !== tapStart.id) { tapStart = null; return; }
+
   const { el, x, y, t } = tapStart;
   tapStart = null;
+
   const moved   = Math.hypot(e.clientX - x, e.clientY - y);
   const elapsed = performance.now() - t;
-  if (moved < 12 && elapsed < 600) openCard(memories[el.dataset.index], e, el);
+
+  if (moved < 20 && elapsed < 800) {
+    openCard(memories[el.dataset.index], e, el);
+  }
 });
 
-//garden.addEventListener('pointercancel', () => { tapStart = null; });if (moved < 20 && elapsed < 800) openCard(...);
+garden.addEventListener('pointercancel', () => { tapStart = null; });
 
 // Teclado
 garden.addEventListener('keydown', (e) => {
@@ -307,9 +351,9 @@ garden.addEventListener('keydown', (e) => {
   e.preventDefault();
   const r = el.getBoundingClientRect();
   openCard(memories[el.dataset.index],
-           { clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }, el);
+           { clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 },
+           el);
 });
-
 
 // ============================================================
 // 6. TARJETA (overlay)
