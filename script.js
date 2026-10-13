@@ -247,6 +247,7 @@ function buildGarden() {
     tulip.style.setProperty('--h', h + 'px');
     tulip.style.setProperty('--z', z + 'px');
     tulip.style.setProperty('--s', scale);
+    tulip.style.zIndex = 10 + Math.round(z / 10);
 
     tulip.innerHTML =
       `<div class="tulip-inner" style="animation-delay:${(Math.random() * 5).toFixed(2)}s">` +
@@ -296,7 +297,7 @@ garden.addEventListener('pointerup', (e) => {
   if (moved < 12 && elapsed < 600) openCard(memories[el.dataset.index], e, el);
 });
 
-garden.addEventListener('pointercancel', () => { tapStart = null; });
+//garden.addEventListener('pointercancel', () => { tapStart = null; });if (moved < 20 && elapsed < 800) openCard(...);
 
 // Teclado
 garden.addEventListener('keydown', (e) => {
