@@ -132,16 +132,18 @@ function playTasTax() {
 // 3. DATOS: RECUERDOS
 // ============================================================
 const memories = [
-  { title: "La primera vez que nos reímos sin parar", text: "Fue ese día en la cafetería...", img: "\jardin recuerdos\img\im2.png", tag: "Risa eterna" },
-  { title: "Nuestro viaje improvisado", text: "Sin planear nada...", img: "img/recuerdo2.jpg", tag: "Aventura" },
-  { title: "Cuando me escuchaste sin juzgar", text: "Ese día no necesitaba consejos...", img: "img/recuerdo3.jpg", tag: "Gracias" },
-  { title: "Las 3 a.m. hablando de todo", text: "De la vida, del universo...", img: "img/recuerdo4.jpg", tag: "Madrugadas" },
-  { title: "Tu cumpleaños sorpresa", text: "Cuando entraste y viste todo...", img: "img/recuerdo5.jpg", tag: "Sorpresa" },
-  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/recuerdo6.jpg", tag: "Presencia" },
-  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/recuerdo6.jpg", tag: "Presencia" },
-  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/recuerdo6.jpg", tag: "Presencia" },
-  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/recuerdo6.jpg", tag: "Presencia" },
-  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/recuerdo6.jpg", tag: "Presencia" }
+  { title: "La primera vez que nos reímos sin parar", text: "Fue ese día en la cafetería...", img: "\jardin recuerdos\im1.jpg", tag: "Risa eterna" },
+  { title: "Nuestro viaje improvisado", text: "Sin planear nada...", img: "img/im2.jpeg", tag: "Aventura" },
+  { title: "Cuando me escuchaste sin juzgar", text: "Ese día no necesitaba consejos...", img: "img/im3.jpg", tag: "Gracias" },
+  { title: "Las 3 a.m. hablando de todo", text: "De la vida, del universo...", img: "img/im4.jpg", tag: "Madrugadas" },
+  { title: "Tu cumpleaños sorpresa", text: "Cuando entraste y viste todo...", img: "img/im5.jpeg", tag: "Sorpresa" },
+  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/im6.jpg", tag: "Presencia" },
+  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/im7.jpeg", tag: "Presencia" },
+  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/im8.webp", tag: "Presencia" },
+  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/um9.png", tag: "Presencia" },
+  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/im10.jpeg", tag: "Presencia" },
+  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/im11.jpeg", tag: "Presencia" },
+  { title: "Simplemente tú", text: "No hace falta una anécdota épica...", img: "img/im12.jpg", tag: "Presencia" }
 ];
 
 
