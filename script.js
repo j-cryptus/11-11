@@ -132,7 +132,7 @@ function playTasTax() {
 // 3. DATOS: RECUERDOS
 // ============================================================
 const memories = [
-  { title: "La primera vez que nos reímos sin parar", text: "Fue ese día en la cafetería...", img: "\jardin recuerdos\im1.jpg", tag: "Risa eterna" },
+  { title: "La primera vez que nos reímos sin parar", text: "Fue ese día en la cafetería...", img: "img/im1.jpg", tag: "Risa eterna" },
   { title: "Nuestro viaje improvisado", text: "Sin planear nada...", img: "img/im2.jpeg", tag: "Aventura" },
   { title: "Cuando me escuchaste sin juzgar", text: "Ese día no necesitaba consejos...", img: "img/im3.jpg", tag: "Gracias" },
   { title: "Las 3 a.m. hablando de todo", text: "De la vida, del universo...", img: "img/im4.jpg", tag: "Madrugadas" },
