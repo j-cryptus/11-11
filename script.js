@@ -596,3 +596,23 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
+// ============================================================
+// 10. EFECTO MÁQUINA DE ESCRIBIR EN EL FOOTER
+// ============================================================
+(function typeFooter() {
+  const el = document.querySelector('.footer-note p');
+  if (!el) return;
+
+  const fullHTML = el.innerHTML;   // conserva el <span class="accent">
+  const plainText = el.textContent;
+  el.textContent = '';
+  el.style.visibility = 'visible';
+
+  let i = 0;
+  function step() {
+    i++;
+    el.textContent = plainText.slice(0, i);
+    if (i < plainText.length) setTimeout(step, 40);
+  }
+  setTimeout(step, 800);
+})();
