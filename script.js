@@ -132,17 +132,18 @@ function playTasTax() {
 // 3. DATOS: RECUERDOS
 // ============================================================
 const memories = [
-  { /*title: "Nuestro viaje improvisado", text: "Sin planear nada...",*/ img: "img/im2.jpeg"/*, tag: "Aventura" */},
-  { /*title: "Cuando me escuchaste sin juzgar", text: "Ese día no necesitaba consejos...",*/ img: "img/im3.jpg"/*, tag: "Gracias"*/ },
-  { /*title: "Las 3 a.m. hablando de todo", text: "De la vida, del universo...",*/ img: "img/im4.jpg"/*, tag: "Madrugadas"*/ },
-  { /*title: "Tu cumpleaños sorpresa", text: "Cuando entraste y viste todo...",*/ img: "img/im5.jpeg"/*, tag: "Sorpresa"*/ },
-  { /*title: "Simplemente tú", text: "No hace falta una anécdota épica...",*/ img: "img/im6.jpg"/*, tag: "Presencia"*/ },
-  { /*title: "Simplemente tú", text: "No hace falta una anécdota épica...",*/ img: "img/im7.jpeg"/*, tag: "Presencia" */},
-  { /*title: "Simplemente tú", text: "No hace falta una anécdota épica...",*/ img: "img/im8.webp"/*, tag: "Presencia"*/ },
-  { /*title: "Simplemente tú", text: "No hace falta una anécdota épica...",*/ img: "img/um9.png"/*, tag: "Presencia" */},
-  { /*title: "Simplemente tú", text: "No hace falta una anécdota épica...",*/ img: "img/im10.jpeg"/*, tag: "Presencia"*/ },
-  { /*title: "Simplemente tú", text: "No hace falta una anécdota épica...",*/ img: "img/im11.jpeg"/*, tag: "Presencia" */},
-  { /*title: "Simplemente tú", text: "No hace falta una anécdota épica...",*/ img: "img/im12.jpg"/*, tag: "Presencia"*/ }
+  { title: "Si el plan no funciona, cambia le plan pero no cambies la meta.", /*text: "Sin planear nada...",*/ img: "img/IMG-1.jpg"/*, tag: "Aventura" */},
+  { title: "El éxito en la vida no se lo mide por lo que logras, sino por los obstáculos que superas",/* text: "Sin planear nada...",*/ img: "img/IMG-2.jpg"/*, tag: "Aventura" */},
+  { title: "No todas las tormentas vienen a perturbar tu vida, algunas llegan a despejar tu camino",/* text: "Ese día no necesitaba consejos...",*/ img: "img/IMG-3.jpg"/*, tag: "Gracias"*/ },
+  { title: "No vayas a donde te lleve el camino, ve a donde no hay camino y deja un sendero",/* text: "De la vida, del universo...",*/ img: "img/IMG-4.jpg"/*, tag: "Madrugadas"*/ },
+  { title: "Si el barco de tu vida se está hundiendo, lo vuelves submarino, pero usted no se me rinda",/* text: "Cuando entraste y viste todo...",*/ img: "img/IMG-5.jpg"/*, tag: "Sorpresa"*/ },
+  { title: "No sé ni como ni cuándo ni dónde, pero si va a ser, será en su momento, y será hermoso.",/* text: "No hace falta una anécdota épica...",*/ img: "img/IMG-6.jpg"/*, tag: "Presencia"*/ },
+  { title: "La vida no se trata de llegar a la meta, sino de disfrutar cada paso del camino.",/* text: "No hace falta una anécdota épica...",*/ img: "img/IMG-7.jpg"/*, tag: "Presencia" */},
+  { title: "Los sueños empiezan siendo pequeños pero pueden crecer contigo.",/* text: "No hace falta una anécdota épica...",*/ img: "img/IMG-8.jpg"/*, tag: "Presencia"*/ },
+  { title: "El futuro pertenece a aquellos que creen en la belleza de sus sueños",/* text: "No hace falta una anécdota épica...",*/ img: "img/IMG-9.jpg"/*, tag: "Presencia" */},
+  { title: "La sonrisa es la vitamina del alma, ¡Sonríe!",/* text: "No hace falta una anécdota épica...",*/ img: "img/IMG-10.jpg"/*, tag: "Presencia"*/ },
+  { title: "Eres Valiente, eres Fuerte, eres Capaz",/* text: "No hace falta una anécdota épica...",*/ img: "img/IMG-11.jpg"/*, tag: "Presencia" */},
+  { title: "Sé que lo estás intentando, sé que te esfuerzas y aunque a veces parezca difícil no te rindes, sigue así, confía en tí, ¡Tú puedes!",/* text: "No hace falta una anécdota épica...",*/ img: "img/IMG-12.jpg"/*, tag: "Presencia"*/ }
 ];
 
 
