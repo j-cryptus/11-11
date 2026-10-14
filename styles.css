@@ -383,3 +383,66 @@ body {
   top: max(12px, env(safe-area-inset-top));
   right: max(12px, env(safe-area-inset-right));
 }
+/* ============ TEXTO FIJO INFERIOR ============ */
+.footer-note {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;                      /* por encima del jardín (2) y del canvas (5), debajo de la tarjeta (10) */
+  pointer-events: none;            /* no bloquea toques al jardín */
+  padding:
+    12px 16px
+    calc(12px + env(safe-area-inset-bottom, 0px));  /* respeta la barrita de iPhone */
+  text-align: center;
+  background: linear-gradient(
+    to top,
+    rgba(11, 16, 38, 0.85) 0%,
+    rgba(11, 16, 38, 0.55) 60%,
+    rgba(11, 16, 38, 0) 100%
+  );
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.footer-note p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #cfd4ff;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  opacity: 0.9;
+  animation: footerPulse 4s ease-in-out infinite;
+}
+
+.footer-note .accent {
+  background: linear-gradient(90deg, #ffb6ff, #9ad0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
+
+@keyframes footerPulse {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+/* En móvil un pelín más pequeño */
+@media (max-width: 768px) {
+  .footer-note p { font-size: 0.78rem; }
+  .footer-note  { padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Landscape con poca altura: que sea más discreto */
+@media (max-height: 500px) and (orientation: landscape) {
+  .footer-note { padding: 6px 14px calc(6px + env(safe-area-inset-bottom, 0px)); }
+  .footer-note p { font-size: 0.7rem; }
+}
+
+/* Respeta reduce-motion */
+@media (prefers-reduced-motion: reduce) {
+  .footer-note p { animation: none; opacity: 1; }
+}
