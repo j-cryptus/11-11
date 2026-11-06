@@ -132,7 +132,7 @@ function playTasTax() {
 // 3. DATOS: RECUERDOS
 // ============================================================
 const memories = [
-  { title: "Si el plan no funciona, cambia le plan pero no cambies la meta.", /*text: "Sin planear nada...",*/ img: "img/IMG-1.jpg"/*, tag: "Aventura" */},
+  { title: "Si el plan no funciona, cambia el plan pero no cambies la meta.", /*text: "Sin planear nada...",*/ img: "img/IMG-1.jpg"/*, tag: "Aventura" */},
   { title: "El éxito en la vida no se lo mide por lo que logras, sino por los obstáculos que superas",/* text: "Sin planear nada...",*/ img: "img/IMG-2.jpg"/*, tag: "Aventura" */},
   { title: "No todas las tormentas vienen a perturbar tu vida, algunas llegan a despejar tu camino",/* text: "Ese día no necesitaba consejos...",*/ img: "img/IMG-3.jpg"/*, tag: "Gracias"*/ },
   { title: "No vayas a donde te lleve el camino, ve a donde no hay camino y deja un sendero",/* text: "De la vida, del universo...",*/ img: "img/IMG-4.jpg"/*, tag: "Madrugadas"*/ },
@@ -616,3 +616,267 @@ animate();
   }
   setTimeout(step, 800);
 })();
+
+// ============================================================
+// 10. LUNA INTERACTIVA (se abre al haber visto todos los recuerdos)
+// ============================================================
+
+const moonBtn     = document.getElementById('moon');
+const moonLock    = document.getElementById('moonLock');
+const moonOverlay = document.getElementById('moonOverlay');
+const moonClose   = document.getElementById('moonClose');
+const moonCanvas  = document.getElementById('moonFireworks');
+
+// Cuántas flores hay que ver para desbloquear (todas)
+const totalMemories = memories.length;
+const seenMemories  = new Set();
+
+// Guardamos el HTML original del candado para actualizarlo
+function updateMoonLock() {
+  if (!moonLock) return;
+  const remaining = totalMemories - seenMemories.size;
+  moonLock.textContent = remaining > 0
+    ? `🌷 ${seenMemories.size}/${totalMemories}`
+    : '✨';
+  if (seenMemories.size >= totalMemories) unlockMoon();
+}
+
+// Marca la luna como desbloqueada
+let moonUnlocked = false;
+function unlockMoon() {
+  if (moonUnlocked) return;
+  moonUnlocked = true;
+  moonBtn.classList.remove('locked');
+  moonBtn.classList.add('unlocked');
+  moonBtn.setAttribute('aria-label', 'Abrir mensaje especial de la luna');
+  // pequeño destello al desbloquear
+  burstParticles(
+    moonBtn.getBoundingClientRect().left + moonBtn.offsetWidth / 2,
+    moonBtn.getBoundingClientRect().top  + moonBtn.offsetHeight / 2,
+    30
+  );
+}
+
+// Estado inicial bloqueado
+moonBtn.classList.add('locked');
+updateMoonLock();
+
+// Escuchar cada vez que se abre una tarjeta
+// (enganchamos al final de openCard sin romper lo existente)
+const _openCardOriginal = openCard;
+openCard = function (mem, event, tulip) {
+  _openCardOriginal.call(this, mem, event, tulip);
+  const idx = memories.indexOf(mem);
+  if (idx >= 0 && !seenMemories.has(idx)) {
+    seenMemories.add(idx);
+    updateMoonLock();
+  }
+};
+
+// ============================================================
+// 10b. CORAZÓN DE FUEGOS ARTIFICIALES
+// ============================================================
+
+const fwCtx = moonCanvas.getContext('2d');
+let fwParticles = [];
+let fwRafId = null;
+
+function resizeFireworks() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  moonCanvas.width  = window.innerWidth  * dpr;
+  moonCanvas.height = window.innerHeight * dpr;
+  moonCanvas.style.width  = window.innerWidth  + 'px';
+  moonCanvas.style.height = window.innerHeight + 'px';
+  fwCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resizeFireworks);
+
+// Colores del corazón (azules y rosados, muy romántico)
+const heartColors = ['#66d9ff', '#9ad0ff', '#ff9ee5', '#ff6ec7', '#c86dd7', '#ffffff'];
+
+// Fórmula paramétrica del corazón
+// x = 16 sin³(t) ; y = 13cos(t) - 5cos(2t) - 2cos(3t) - cos(4t)
+function heartPoint(t) {
+  return {
+    x: 16 * Math.pow(Math.sin(t), 3),
+    y: -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t))
+  };
+}
+
+class FireworkParticle {
+  constructor(x, y, vx, vy, color, life = 1) {
+    this.x = x; this.y = y;
+    this.vx = vx; this.vy = vy;
+    this.color = color;
+    this.life = life;
+    this.decay = 0.008 + Math.random() * 0.012;
+    this.size = 1.5 + Math.random() * 2.5;
+    this.trail = [];
+  }
+  update() {
+    this.trail.push({ x: this.x, y: this.y });
+    if (this.trail.length > 6) this.trail.shift();
+    this.x += this.vx;
+    this.y += this.vy;
+    this.vx *= 0.985;
+    this.vy *= 0.985;
+    this.vy += 0.03;          // gravedad suave
+    this.life -= this.decay;
+  }
+  draw(ctx) {
+    const a = Math.max(0, this.life);
+    // estela
+    for (let i = 0; i < this.trail.length; i++) {
+      const t = this.trail[i];
+      const ta = (i / this.trail.length) * a * 0.4;
+      ctx.globalAlpha = ta;
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, this.size * (i / this.trail.length) * 0.7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // núcleo
+    ctx.globalAlpha = a;
+    ctx.fillStyle = this.color;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+}
+
+// Genera un corazón de fuegos artificiales en el centro
+function launchHeartFireworks() {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  const scale = Math.min(window.innerWidth, window.innerHeight) / 40;
+
+  // Contorno del corazón (muchos puntos)
+  const points = 120;
+  for (let i = 0; i < points; i++) {
+    const t = (i / points) * Math.PI * 2;
+    const p = heartPoint(t);
+    const px = cx + p.x * scale;
+    const py = cy + p.y * scale;
+
+    // Varias partículas por punto del contorno
+    const count = 3;
+    for (let k = 0; k < count; k++) {
+      const angle = Math.atan2(py - cy, px - cx) + (Math.random() - 0.5) * 0.5;
+      const speed = 0.3 + Math.random() * 1.2;
+      fwParticles.push(new FireworkParticle(
+        cx + (Math.random() - 0.5) * 30,
+        cy + (Math.random() - 0.5) * 30,
+        Math.cos(angle) * speed + (px - cx) * 0.008,
+        Math.sin(angle) * speed + (py - cy) * 0.008,
+        heartColors[Math.floor(Math.random() * heartColors.length)]
+      ));
+    }
+  }
+
+  // Relleno suave del corazón
+  for (let i = 0; i < 80; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const r = Math.sqrt(Math.random());
+    const p = heartPoint(t);
+    const px = cx + p.x * scale * r;
+    const py = cy + p.y * scale * r;
+    fwParticles.push(new FireworkParticle(
+      px, py,
+      (Math.random() - 0.5) * 0.6,
+      (Math.random() - 0.5) * 0.6 - 0.3,
+      heartColors[Math.floor(Math.random() * heartColors.length)]
+    ));
+  }
+
+  // Chispas radiales extra
+  for (let i = 0; i < 50; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 2 + Math.random() * 3;
+    fwParticles.push(new FireworkParticle(
+      cx, cy,
+      Math.cos(angle) * speed,
+      Math.sin(angle) * speed,
+      '#ffffff',
+      0.8
+    ));
+  }
+}
+
+// Loop de dibujo del canvas de fuegos
+function animateFireworks() {
+  fwCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  fwParticles = fwParticles.filter(p => p.life > 0);
+  fwParticles.forEach(p => { p.update(); p.draw(fwCtx); });
+  fwCtx.globalAlpha = 1;
+  fwRafId = requestAnimationFrame(animateFireworks);
+}
+
+// ============================================================
+// 10c. ABRIR / CERRAR EL MENSAJE DE LA LUNA
+// ============================================================
+
+function openMoonMessage() {
+  if (!moonUnlocked) {
+    // Pequeña sacudida si aún está bloqueada
+    moonBtn.animate(
+      [{ transform: 'translateX(0)' },
+       { transform: 'translateX(-6px)' },
+       { transform: 'translateX(6px)' },
+       { transform: 'translateX(0)' }],
+      { duration: 300, easing: 'ease-in-out' }
+    );
+    return;
+  }
+
+  if (!fwRafId) {
+    resizeFireworks();
+    animateFireworks();
+  }
+
+  moonOverlay.classList.add('active');
+  moonOverlay.setAttribute('aria-hidden', 'false');
+
+  fwParticles = [];
+  launchHeartFireworks();
+
+  // Repetir explosión cada 1.8s mientras esté abierto
+  const repeatId = setInterval(() => {
+    if (!moonOverlay.classList.contains('active')) {
+      clearInterval(repeatId);
+      return;
+    }
+    launchHeartFireworks();
+  }, 1800);
+
+  // Sonido épico
+  if (typeof playTasTax === 'function') playTasTax();
+}
+
+function closeMoonMessage() {
+  moonOverlay.classList.remove('active');
+  moonOverlay.setAttribute('aria-hidden', 'true');
+  // Detener animación tras 600ms
+  setTimeout(() => {
+    if (!moonOverlay.classList.contains('active') && fwRafId) {
+      cancelAnimationFrame(fwRafId);
+      fwRafId = null;
+      fwParticles = [];
+      fwCtx.clearRect(0, 0, moonCanvas.width, moonCanvas.height);
+    }
+  }, 700);
+}
+
+// Eventos
+moonBtn.addEventListener('click', openMoonMessage);
+moonClose.addEventListener('click', closeMoonMessage);
+moonOverlay.addEventListener('click', (e) => {
+  if (e.target === moonOverlay) closeMoonMessage();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && moonOverlay.classList.contains('active')) {
+    closeMoonMessage();
+  }
+});
