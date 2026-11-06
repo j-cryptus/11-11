@@ -818,9 +818,13 @@ function animateFireworks() {
 // 10c. ABRIR / CERRAR EL MENSAJE DE LA LUNA
 // ============================================================
 
+let moonRepeatId = null;
+
 function openMoonMessage() {
+  // Bloqueada: sacudida + chispitas
   if (!moonUnlocked) {
-    // Pequeña sacudida si aún está bloqueada
+    const r = moonBtn.getBoundingClientRect();
+    burstParticles(r.left + r.width / 2, r.top + r.height / 2, 6);
     moonBtn.animate(
       [{ transform: 'translateX(0)' },
        { transform: 'translateX(-6px)' },
@@ -842,29 +846,33 @@ function openMoonMessage() {
   fwParticles = [];
   launchHeartFireworks();
 
-  // Repetir explosión cada 1.8s mientras esté abierto
-  const repeatId = setInterval(() => {
+  // Un solo intervalo a la vez (evita acumularlos al abrir/cerrar rápido)
+  clearInterval(moonRepeatId);
+  moonRepeatId = setInterval(() => {
     if (!moonOverlay.classList.contains('active')) {
-      clearInterval(repeatId);
+      clearInterval(moonRepeatId);
       return;
     }
     launchHeartFireworks();
   }, 1800);
 
-  // Sonido épico
-  if (typeof playTasTax === 'function') playTasTax();
+  playTasTax();
 }
 
 function closeMoonMessage() {
   moonOverlay.classList.remove('active');
   moonOverlay.setAttribute('aria-hidden', 'true');
-  // Detener animación tras 600ms
+  clearInterval(moonRepeatId);
+
+  // Deja de respirar al cerrar
+  moonBtn.classList.add('calm');
+
   setTimeout(() => {
     if (!moonOverlay.classList.contains('active') && fwRafId) {
       cancelAnimationFrame(fwRafId);
       fwRafId = null;
       fwParticles = [];
-      fwCtx.clearRect(0, 0, moonCanvas.width, moonCanvas.height);
+      fwCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     }
   }, 700);
 }
@@ -880,3 +888,9 @@ document.addEventListener('keydown', (e) => {
     closeMoonMessage();
   }
 });
+
+
+
+
+
+
