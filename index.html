@@ -6,14 +6,16 @@
   <meta name="theme-color" content="#0b1026" />
   <meta name="description" content="Un jardín interactivo de recuerdos y logros." />
   <title>🌸 Jardín de Recuerdos</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- Cielo: estrellas, luna y estrellas fugaces -->
   <div class="sky" id="sky">
     <div class="stars" id="stars"></div>
-    <div class="moon"></div>
+    <button class="moon" id="moon" type="button" aria-label="Abrir mensaje especial">
+  <span class="moon-lock" id="moonLock" aria-hidden="true">🌷 0/12</span>
+</button>
   </div>
 
   <!-- Canvas para partículas -->
@@ -46,7 +48,23 @@
     <img id="viewerImg" src="" alt="" />
     <button class="close-btn" id="viewerClose" type="button" aria-label="Cerrar imagen">✕</button>
   </div>
-
+<div class="moon-overlay" id="moonOverlay" aria-hidden="true">
+  <canvas class="moon-fireworks" id="moonFireworks"></canvas>
+  <div class="moon-message" id="moonMessage">
+    <span class="moon-emoji">🩵</span>
+    <h2 class="moon-title">Sigues siendo mi lugar favorito </h2>
+    <p class="moon-text">
+      Hay personas que llegan a tu vida y se quedan para siempre, aunque el camino tome otros rumbos. Tú eres una de ellas.<br>
+      Si cierro los ojos, sigo escuchando tu risa. Y aunque el tiempo pase, aunque la vida nos ponga cosas de por medio, no hay día en que no me acuerde de ti.<br>
+      Eres mi mayor reliquia. Lo digo en serio: lo que vivimos no lo cambio por nada. Fuiste mi persona favorita. Sigues siendo mi recuerdo favorito. Y aunque hoy no estemos, sigues ocupando un lugar que nadie más ocupa.<br>
+No te rindas nunca, mi reina.  Que el mundo es duro pero tú eres más. Brilla como solo tú sabes, el mundo necesita más personas como tú.. Y si algún día quieres volver a ser mi gatita… aquí está tu gatito, esperándote. <br>
+      <strong>Y si alguna vez te preguntas si alguien te recuerda con cariño…la respuesta es sí. Todas las noches, mirando la luna, cuando miro la luna, pienso en ti.</strong>
+    </p>
+    <button class="moon-close" id="moonClose" type="button">Cerrar 💜</button>
+  </div>
+</div>
   <script src="script.js"></script>
 </body>
 </html>
+
+
