@@ -451,23 +451,33 @@ body {
 
 /* Reset del <button> para que se vea igual que antes */
 button.moon {
+  position: fixed;
+  z-index: 3;
   border: none;
   padding: 0;
-  cursor: default;
   font: inherit;
   outline: none;
+  cursor: default;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Cuando está bloqueada: sin clic */
 button.moon.locked { pointer-events: none; }
 
-/* Cuando se desbloquea: pulso suave + brillo extra */
+/* Cuando se desbloquea: pulso suave + brillo extra 
 button.moon.unlocked {
   cursor: pointer;
   pointer-events: auto;
   animation: moonGlow 3s ease-in-out infinite alternate,
              moonUnlockPulse 2.4s ease-in-out infinite;
+}*/
+button.moon.unlocked {
+  cursor: pointer;
+  animation: moonUnlockPulse 2.4s ease-in-out infinite;
 }
+button.moon.unlocked::after { animation-duration: 3s; }
 
 @keyframes moonUnlockPulse {
   0%, 100% {
@@ -495,7 +505,7 @@ button.moon.unlocked {
   opacity: 0;
   transition: opacity 0.4s ease;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-  display: none;
+  /*display: none;*/
 }
 
 button.moon.locked .moon-lock { opacity: 1; }
@@ -628,4 +638,24 @@ button.moon.locked .moon-lock { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   button.moon.unlocked { animation: none; box-shadow: 0 0 60px 20px rgba(255,240,180,.4); }
   .moon-emoji, .moon-title { animation: none; }
+}
+button.moon.calm {
+  animation: none;
+  box-shadow: 0 0 40px 10px rgba(255, 240, 180, .2);
+}
+button.moon.calm::after {
+  animation: none;
+  opacity: .6;
+}
+
+@keyframes moonUnlockPulse {
+  0%, 100% {
+    box-shadow: 0 0 40px 10px rgba(255, 240, 180, .35);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 90px 30px rgba(255, 220, 180, .55),
+                0 0 140px 60px rgba(255, 180, 220, .25);
+    transform: scale(1.06);
+  }
 }
