@@ -461,6 +461,7 @@ button.moon {
   pointer-events: auto;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  display: none;
 }
 
 /* Cuando está bloqueada: sin clic */
