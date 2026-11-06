@@ -461,7 +461,6 @@ button.moon {
   pointer-events: auto;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  display: none;
 }
 
 /* Cuando está bloqueada: sin clic */
@@ -506,7 +505,7 @@ button.moon.unlocked::after { animation-duration: 3s; }
   opacity: 0;
   transition: opacity 0.4s ease;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-  /*display: none;*/
+  display: none;
 }
 
 button.moon.locked .moon-lock { opacity: 1; }
